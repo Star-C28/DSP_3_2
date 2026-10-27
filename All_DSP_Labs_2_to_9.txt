@@ -1,0 +1,571 @@
+DIGITAL SIGNAL PROCESSING (DSP) LAB PROGRAMS
+Labs 2 to 9 - Complete C++ Source Codes
+===========================================================================
+
+===========================================================================
+LAB 02: Addition of Two Discrete-Time Signals
+Original filename: lab_2.cpp
+===========================================================================
+
+/* Problem 02: Addition of two discrete-time signals.
+ * Logic: pad shorter signal with zeros, then add sample-by-sample.
+ */
+#include<bits/stdc++.h>
+using namespace std;
+
+#define MAX 100
+
+int main() {
+    int x_size, y_size, z_size, i;
+    int x[MAX] = {0}, y[MAX] = {0}, z[MAX] = {0};
+
+    cout << "Enter number of samples of first signal: ";
+    cin >> x_size;
+
+    cout << "Enter number of samples of second signal: ";
+    cin >> y_size;
+
+    if (x_size < 1 || x_size > MAX ||
+        y_size < 1 || y_size > MAX) {
+        return 1;
+    }
+
+    if (x_size > y_size)
+        z_size = x_size;
+    else
+        z_size = y_size;
+
+    cout << "Enter the samples of first signal:\n";
+    for (i = 0; i < x_size; i++) {
+        cout << "Enter sample: ";
+        cin >> x[i];
+    }
+
+    cout << "Enter the samples of second signal:\n";
+    for (i = 0; i < y_size; i++) {
+        cout << "Enter sample: ";
+        cin >> y[i];
+    }
+
+    for (i = 0; i < z_size; i++) {
+        z[i] = x[i] + y[i];
+    }
+
+    cout << "\nFirst signal samples: ";
+    for (i = 0; i < x_size; i++)
+        cout << x[i] << " ";
+
+    cout << "\nSecond signal samples: ";
+    for (i = 0; i < y_size; i++)
+        cout << y[i] << " ";
+
+    cout << "\nResultant signal samples: ";
+    for (i = 0; i < z_size; i++)
+        cout << z[i] << " ";
+
+    cout << endl;
+
+    return 0;
+}
+
+
+===========================================================================
+LAB 03: Multiplication of Two Discrete-Time Signals
+Original filename: lab_3.cpp
+===========================================================================
+
+
+/* Problem 03: Multiplication of two discrete-time signals.
+ * Logic: pad shorter signal with zeros, then multiply sample-by-sample.
+ */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define MAX 100
+
+int main() {
+    int x_size, y_size, z_size, i;
+    int x[MAX] = {0}, y[MAX] = {0}, z[MAX] = {0};
+
+    cout << "Enter number of samples of first signal: ";
+    cin >> x_size;
+
+    cout << "Enter number of samples of second signal: ";
+    cin >> y_size;
+
+    if (x_size < 1 || x_size > MAX ||
+        y_size < 1 || y_size > MAX) {
+        return 1;
+    }
+
+    if (x_size > y_size)
+        z_size = x_size;
+    else
+        z_size = y_size;
+
+    cout << "Enter the samples of first signal:\n";
+    for (i = 0; i < x_size; i++) {
+        cout << "Enter sample: ";
+        cin >> x[i];
+    }
+
+    cout << "Enter the samples of second signal:\n";
+    for (i = 0; i < y_size; i++) {
+        cout << "Enter sample: ";
+        cin >> y[i];
+    }
+
+    for (i = 0; i < z_size; i++) {
+        z[i] = x[i] * y[i];
+    }
+
+    cout << "\nFirst signal samples: ";
+    for (i = 0; i < x_size; i++)
+        cout << x[i] << " ";
+
+    cout << "\nSecond signal samples: ";
+    for (i = 0; i < y_size; i++)
+        cout << y[i] << " ";
+
+    cout << "\nResultant signal samples after multiplication: ";
+    for (i = 0; i < z_size; i++)
+        cout << z[i] << " ";
+
+    cout << endl;
+
+    return 0;
+}
+
+
+===========================================================================
+LAB 04: Amplitude Scaling
+Original filename: lab_4.cpp
+===========================================================================
+
+
+/* Problem 04: Amplitude scaling.
+ * Logic: y[i] = x[i] * factor.
+ */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define MAX 100
+
+int main() {
+    int x_size, i;
+    float x[MAX], y[MAX], factor;
+
+    cout << "Enter number of samples of signal: ";
+    cin >> x_size;
+
+    if (x_size < 1 || x_size > MAX) {
+        return 1;
+    }
+
+    cout << "Enter the samples of signal:\n";
+    for (i = 0; i < x_size; i++) {
+        cout << "Enter sample: ";
+        cin >> x[i];
+    }
+
+    cout << "Enter the amplitude factor: ";
+    cin >> factor;
+
+    for (i = 0; i < x_size; i++) {
+        y[i] = x[i] * factor;
+    }
+
+    cout << fixed << setprecision(2);
+
+    cout << "\nOriginal signal samples: ";
+    for (i = 0; i < x_size; i++)
+        cout << x[i] << " ";
+
+    cout << "\nResultant signal samples after amplitude scaling: ";
+    for (i = 0; i < x_size; i++)
+        cout << y[i] << " ";
+
+    cout << endl;
+
+    return 0;
+}
+
+
+===========================================================================
+LAB 05: Even and Odd Components of a Discrete-Time Signal
+Original filename: lab_5.cpp
+===========================================================================
+
+
+/* Problem 05: Even and odd components of a discrete-time signal.
+ * Logic: xe[n] = (x[n] + x[-n])/2; xo[n] = (x[n] - x[-n])/2.
+ */
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define MAX 100
+
+int sample_at(const int x[], int ns, int ne, int n) {
+    if (n < ns || n > ne)
+        return 0;
+
+    return x[n - ns];
+}
+
+int main() {
+    int x_size, i, org, ns, ne, L, n;
+    int x[MAX];
+
+    double xe[2 * MAX - 1] = {0};
+    double xo[2 * MAX - 1] = {0};
+
+    cout << "Enter number of samples of signal: ";
+    cin >> x_size;
+
+    if (x_size < 1 || x_size > MAX)
+        return 1;
+
+    cout << "Enter the samples of signal:\n";
+    for (i = 0; i < x_size; i++) {
+        cout << "Enter sample: ";
+        cin >> x[i];
+    }
+
+    cout << "Enter the sample no. which is the origin (1 to "
+         << x_size << "): ";
+    cin >> org;
+
+    if (org < 1 || org > x_size)
+        return 1;
+
+    ns = -(org - 1);
+    ne = ns + x_size - 1;
+
+    L = (-ns > ne) ? -ns : ne;
+
+    for (n = -L; n <= L; n++) {
+        xe[n + L] = (sample_at(x, ns, ne, n)
+                   + sample_at(x, ns, ne, -n)) / 2.0;
+
+        xo[n + L] = (sample_at(x, ns, ne, n)
+                   - sample_at(x, ns, ne, -n)) / 2.0;
+    }
+
+    cout << "\nOriginal signal:\n";
+    for (i = 0; i < x_size; i++)
+        cout << "x[" << ns + i << "] = " << x[i] << endl;
+
+    cout << fixed << setprecision(1);
+
+    cout << "\nEven component:\n";
+    for (n = -L; n <= L; n++)
+        cout << "xe[" << n << "] = " << xe[n + L] << endl;
+
+    cout << "\nOdd component:\n";
+    for (n = -L; n <= L; n++)
+        cout << "xo[" << n << "] = " << xo[n + L] << endl;
+
+    cout << "\nVerification (xe + xo = x):\n";
+    for (n = -L; n <= L; n++) {
+        cout << "n=" << n << " : "
+             << xe[n + L] << " + "
+             << xo[n + L] << " = "
+             << xe[n + L] + xo[n + L] << endl;
+    }
+
+    return 0;
+}
+
+
+===========================================================================
+LAB 06: Linear Convolution
+Original filename: lab_6.cpp
+===========================================================================
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n, m;
+
+    cout << "Enter size of x: ";
+    cin >> n;
+
+    cout << "Enter size of h: ";
+    cin >> m;
+
+    int x[100] = {0};
+    int h[100] = {0};
+    int y[200] = {0};
+
+    cout << "Enter x values: ";
+    for (int i = 0; i < n; i++) {
+        cin >> x[i];
+    }
+
+    cout << "Enter h values: ";
+    for (int i = 0; i < m; i++) {
+        cin >> h[i];
+    }
+
+    int y_size = n + m - 1;
+
+    for (int i = 0; i < y_size; i++) {
+        y[i] = 0;
+
+        for (int j = 0; j <= i; j++) {
+            y[i] = y[i] + x[j] * h[i-j];
+        }
+    }
+
+    cout << "Convolution result: ";
+    for (int i = 0; i < y_size; i++) {
+        cout << y[i] << " ";
+    }
+
+    return 0;
+}
+
+
+===========================================================================
+LAB 07: Deconvolution
+Original filename: lab_7.cpp
+===========================================================================
+
+
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    int y_size, h_size;
+
+    cout << "Enter size of y: ";
+    cin >> y_size;
+
+    cout << "Enter size of h: ";
+    cin >> h_size;
+
+    if (y_size <= 0 || h_size <= 0 ||
+        y_size > 100 || h_size > 100 ||
+        y_size < h_size) {
+        cout << "Invalid input";
+        return 0;
+    }
+
+    double y[100] = {0};
+    double h[100] = {0};
+    double x[100] = {0};
+
+    cout << "Enter y values: ";
+    for (int i = 0; i < y_size; i++) {
+        cin >> y[i];
+    }
+
+    cout << "Enter h values: ";
+    for (int i = 0; i < h_size; i++) {
+        cin >> h[i];
+    }
+
+    if (h[0] == 0) {
+        cout << "Invalid input";
+        return 0;
+    }
+
+    int x_size = y_size - h_size + 1;
+
+    for (int i = 0; i < x_size; i++) {
+        double sum = 0;
+
+        for (int j = 0; j < i; j++) {
+            if (i-j < h_size) {
+                sum += x[j] * h[i-j];
+            }
+        }
+
+        x[i] = (y[i] - sum) / h[0];
+    }
+
+    cout << "Deconvolution result: ";
+    for (int i = 0; i < x_size; i++) {
+        cout << x[i] << " ";
+    }
+
+    return 0;
+}
+
+
+===========================================================================
+LAB 08: Circular Convolution (Direct Method)
+Original filename: lab_8.cpp
+===========================================================================
+
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int i,j,n,x1_size,y_size,x2_size,sum=0,temp,x_o,y_o,h_o;
+
+    cout << "Enter number of first signal samples: ";
+    cin >> x1_size;
+
+    cout << "Enter number of second signal samples: ";
+    cin >> x2_size;
+
+    if(x1_size>x2_size)
+    {
+        y_size=x1_size;
+    }
+    else
+    {
+        y_size=x2_size;
+    }
+
+    int x1[100],x2[100],y[100];
+
+    for(i=0;i<y_size;i++)
+    {
+        x1[i]=0;
+        x2[i]=0;
+        y[i]=0;
+    }
+
+    cout << "Enter first signal sequences: ";
+    for(i=0;i<x1_size;i++)
+    {
+        cin >> x1[i];
+    }
+
+    cout << "\nEnter second signal sequences: ";
+    for(i=0;i<x2_size;i++)
+    {
+        cin >> x2[i];
+    }
+
+    for(i=0;i<y_size;i++)
+    {
+        temp=i;
+        sum=0;
+
+        for(j=0;j<y_size;j++)
+        {
+            sum=sum+x1[j]*x2[temp];
+            temp--;
+
+            if(temp<0)
+            {
+                temp=y_size-1;
+            }
+        }
+        y[i]=sum;
+    }
+
+    cout << "\n\nCircular convolution result: ";
+    for(i=0;i<y_size;i++)
+    {
+        cout << y[i] << "  ";
+    }
+
+    cout << "\n";
+    return 0;
+}
+
+
+===========================================================================
+LAB 09: Circular Convolution (Circulant Matrix Method)
+Original filename: lab_9.cpp
+===========================================================================
+
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int i, j, x1_size, x2_size, y_size;
+
+    cout << "Enter number of first signal samples: ";
+    cin >> x1_size;
+
+    cout << "Enter number of second signal samples: ";
+    cin >> x2_size;
+
+    if(x1_size > x2_size)
+    {
+        y_size = x1_size;
+    }
+    else
+    {
+        y_size = x2_size;
+    }
+
+    int x1[100], x2[100], y[100];
+    int matrix[100][100];
+
+    for(i = 0; i < y_size; i++)
+    {
+        x1[i] = 0;
+        x2[i] = 0;
+        y[i] = 0;
+    }
+
+    cout << "Enter first signal sequences: ";
+    for(i = 0; i < x1_size; i++)
+    {
+        cin >> x1[i];
+    }
+
+    cout << "Enter second signal sequences: ";
+    for(i = 0; i < x2_size; i++)
+    {
+        cin >> x2[i];
+    }
+
+    // Construct Circulant Matrix
+    for(i = 0; i < y_size; i++)
+    {
+        for(j = 0; j < y_size; j++)
+        {
+            matrix[i][j] = x2[(i - j + y_size) % y_size];
+        }
+    }
+
+    cout << "\nCirculant Matrix:\n";
+
+    for(i = 0; i < y_size; i++)
+    {
+        for(j = 0; j < y_size; j++)
+        {
+            cout << matrix[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+
+    // Matrix Multiplication
+    for(i = 0; i < y_size; i++)
+    {
+        for(j = 0; j < y_size; j++)
+        {
+            y[i] += matrix[i][j] * x1[j];
+        }
+    }
+
+    cout << "\nResult of Circular Convolution:\n";
+
+    for(i = 0; i < y_size; i++)
+    {
+        cout << y[i] << "  ";
+    }
+
+    cout << "\n";
+
+    return 0;
+}
+
+
